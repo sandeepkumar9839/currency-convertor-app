@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            font-family: Arial,sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+
+        }
+        h1{
+            color: #333;
+
+        }
+        input,select,button{
+            padding: 10px;
+            margin: 10px;
+            width: 100%;
+            max-width: 400px;
+        }
+        button{
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover{
+            background-color: #45a049;
+
+        }
+        p{
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        async function convertcurrency() {
+            const amount= document.getElementById("t1").value;
+            const fromcurrency= document.getElementById("fromcurrency").value;
+            const tocurrency= document.getElementById("tocurrency").value;
+
+           if(amount===''){
+            document.getElementById("convertedAmount").innerText="Please enter an amount";
+            document.getElementById("convertedAmount").style.color="red";
+           }
+           else{
+            document.getElementById("convertedAmount").value;
+            document.getElementById("convertedAmount").style.color="green";
+           }
+            const url=`https://api.exchangerate-api.com/v4/latest/${fromcurrency}`;
+            try{
+                const response= await fetch(url);
+                const data = await response.json();
+                // console.log(data);
+                const rate = data.rates[tocurrency];
+                const convertedAmount=(amount*rate).toFixed(2);
+                console.log(convertedAmount);
+                document.getElementById("convertedAmount").innerText=`${amount} ${fromcurrency} =${convertedAmount} ${tocurrency}`;
+            }
+            catch(error){
+
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Currency converter</h1>
+    Amount: <input type="number" id="t1" placeholder="Enter Amount"> 
+  <label for="fromcurrency">From</label>
+    <!-- From:<input type="text" id="t2" placeholder="USD_US Dollar">  -->
+      
+    <select name="" id="fromcurrency">
+        <option value="USD">USD_US dollar</option>
+        <option value="INR">INR India Rupees</option>
+        <option value="EUR">EUR Euro</option>
+        <option value="GBP">GBP brithes pound</option>
+    </select>
+     <label for="tocurrency">To:</label>
+     <select  id="tocurrency">
+        <option value="USD">USD_US dollar</option>
+        <option value="INR">INR India Rupees</option>
+        <option value="EUR">EUR Euro</option>
+        <option value="GBP">GBP brithes pound</option>
+     </select>
+     <button onclick="convertcurrency()">convert</button>
+     <h3>Converted Amount:</h3>
+     <p id="convertedAmount"></p>
+   
+
+</body>
+</html>
